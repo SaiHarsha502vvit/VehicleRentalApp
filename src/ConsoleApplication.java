@@ -35,8 +35,7 @@ public class ConsoleApplication {
 
     public static void signUp() {
 
-        System.out
-                .println("Please Enter User details... \n1.Your name\n2.Password\n3.Mobile Number \n4.License Number\n");
+        System.out.println("Please Enter User details... \n1.Your name\n2.Password\n3.Mobile Number \n4.License Number\n");
 
         String username = sc.next();
         String password = sc.next();
