@@ -1,0 +1,49 @@
+# =============================================
+# Java compiled output — NEVER commit these
+# =============================================
+*.class
+*.jar
+*.war
+*.ear
+
+# Build output folders
+bin/
+out/
+build/
+target/
+
+# =============================================
+# IDE files — personal settings, not code
+# =============================================
+
+# VS Code
+.vscode/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# NetBeans
+nbproject/
+nbdist/
+
+# =============================================
+# OS junk files
+# =============================================
+.DS_Store        # Mac
+Thumbs.db        # Windows
+desktop.ini      # Windows
+
+# =============================================
+# Logs & temp files
+# =============================================
+*.log
+*.tmp
+*.temp
