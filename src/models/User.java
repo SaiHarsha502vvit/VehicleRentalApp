@@ -2,7 +2,7 @@ package models;
 
 public class User {
 
-    static int userCount=0;
+    static int userCount = 0;
 
     private int userId;
     private String name;
@@ -16,7 +16,7 @@ public class User {
         this.mobile = mobile;
         this.licenseNumber = licenseNumber;
         this.password = password;
-        this.userId=++userCount;
+        this.userId = ++userCount;
     }
 
     public int getUserId() {
@@ -41,6 +41,31 @@ public class User {
 
     public double getDepoistBalance() {
         return depoistBalance;
+    }
+
+    public boolean addDeposit(double amount) {
+        if (amount <= 0) {
+            System.out.println("Invalid amout");
+            return false;
+        }
+        depoistBalance = depoistBalance + amount;
+        System.out.println(depoistBalance + " Deposited Successfully");
+
+        return true;
+
+    }
+
+    public boolean deductDeposit(double amount) {
+
+        if (amount > depoistBalance) {
+            System.out.println("Insufficient Balance.");
+            return false;
+        }
+
+        depoistBalance = depoistBalance - amount;
+        System.out.println("Deducted amount from your  advance : " + depoistBalance);
+
+        return true;
     }
 
 }
