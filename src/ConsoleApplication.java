@@ -36,7 +36,8 @@ public class ConsoleApplication {
     public static void signUp() {
 
         System.out
-                .println("Please Enter User details... \n1.Your name\n2.Password\n3.Mobile Number \n4.License Number\n");
+                .println(
+                        "Please Enter User details... \n1.Your name\n2.Password\n3.Mobile Number \n4.License Number\n");
 
         String username = sc.next();
         String password = sc.next();
@@ -49,18 +50,27 @@ public class ConsoleApplication {
 
         User harsha = new User(username, mobile, licenseNumber, password);
 
-        System.out.println("Harsha's userId "+harsha.getUserId());
+        System.out.println("Harsha's userId " + harsha.getUserId());
 
         User harshaVardhan = new User(username, mobile, licenseNumber, password);
 
-        System.out.println("Harsha Vardhan's userId "+harshaVardhan.getUserId());
-
-
+        System.out.println("Harsha Vardhan's userId " + harshaVardhan.getUserId());
 
     }
-  
 
     public static void login() {
         // Task 2 = Write logic for Login;
+    }
+
+    public static void depositMoney() {
+
+    }
+
+    public static void rentVehicle() {
+
+    }
+
+    public static void returnVehicle() {
+
     }
 }
