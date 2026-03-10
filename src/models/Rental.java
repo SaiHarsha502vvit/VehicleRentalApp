@@ -1,7 +1,10 @@
-import java.time.LocalDateTime;
+package models;
 
-class Rental
-{
+import java.time.LocalDateTime;
+import enums.RentalStatus;
+
+public class Rental {
+
     private String rentalId;
     private User user;
     private Vehicle vehicle;
