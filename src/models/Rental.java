@@ -9,32 +9,45 @@ public class Rental {
     private User user;
     private Vehicle vehicle;
     private LocalDateTime startTime;
-    private LocalDateTime returnTime;
+    private LocalDateTime actualReturnTime;
     private RentalStatus status;
 
-    public Rental(String rentalId,User user,Vehicle vehicle){
-
+   
+    Rental(String rentalId, User user, Vehicle vehicle)
+    {
         this.rentalId = rentalId;
         this.user = user;
         this.vehicle = vehicle;
+
+       
         this.startTime = LocalDateTime.now();
+
+      
         this.status = RentalStatus.ACTIVE;
-
     }
 
-    public Vehicle getVehicle(){
-        return vehicle;
-    }
-
-    public LocalDateTime getStartTime(){
+    
+    LocalDateTime getStartTime()
+    {
         return startTime;
     }
 
-    public void closeRental(){
-
-        returnTime = LocalDateTime.now();
-        status = RentalStatus.CLOSED;
-
+    
+    Vehicle getVehicle()
+    {
+        return vehicle;
     }
 
+    
+    RentalStatus getStatus()
+    {
+        return status;
+    }
+
+    
+    void closeRental()
+    {
+        actualReturnTime = LocalDateTime.now();
+        status = RentalStatus.CLOSED;
+    }
 }
