@@ -3,40 +3,37 @@ package services;
 import models.Rental;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class BillingSystem {
 
-    public double calculateBill(Rental rental){
+    private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("dd-MM-yyyy  HH:mm:ss");
+
+    public double calculateBill(Rental rental) {
 
         LocalDateTime start = rental.getStartTime();
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime end = LocalDateTime.now();
 
-        long hours = Duration.between(start,now).toHours();
+        long minutes = Duration.between(start, end).toMinutes();
+        if (minutes < 1)
+            minutes = 1;
 
-        if(hours <= 24)
-            hours = 24;
+        double pricePer24Hrs = rental.getVehicle().getPricePer24Hours();
+        double total = minutes * pricePer24Hrs;
 
-        double price = rental.getVehicle().getPricePer24Hours();
+        long hrs = minutes / 60;
+        long remMins = minutes % 60;
 
-        double total = price;
-
-        if(hours > 24){
-
-            long extra = hours - 24;
-
-            total += extra * 100;
-
-        }
-
-        
-        System.out.println("\n------ BILL ------");
-        System.out.println("Vehicle : "+rental.getVehicle().getModelName());
-        System.out.println("Base Price : "+price);
-        System.out.println("Total Bill : "+total);
-        System.out.println("------------------");
+        System.out.println("\n  ============== BILL ==============");
+        System.out.println("  Vehicle     : " + rental.getVehicle().getModelName()
+                + "  [" + rental.getVehicle().getVehicleType() + "]");
+        System.out.println("  Start Time  : " + start.format(FMT));
+        System.out.println("  Return Time : " + end.format(FMT));
+        System.out.printf("  Duration    : %d hr  %d min%n", hrs, remMins);
+        System.out.printf("  Rate        : Rs.%d / 24 hrs%n", (int) pricePer24Hrs);
+        System.out.printf("  Total Bill  : Rs.%.2f%n", total);
+        System.out.println("  ==================================");
 
         return total;
-
     }
-
 }

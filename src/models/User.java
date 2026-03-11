@@ -11,38 +11,43 @@ public class User {
     private String password;
     private double depositBalance;
 
-    public User(String name,long mobile,String license,String password){
-
+    public User(String name, long mobile, String licenseNumber, String password) {
         this.userId = counter++;
         this.name = name;
         this.mobile = mobile;
-        this.licenseNumber = license;
+        this.licenseNumber = licenseNumber;
         this.password = password;
-
     }
 
-    public int getUserId(){
+    public int getUserId() {
         return userId;
     }
 
-    public long getMobile(){
+    public String getName() {
+        return name;
+    }
+
+    public long getMobile() {
         return mobile;
     }
 
-    public String getPassword(){
+    public String getLicenseNumber() {
+        return licenseNumber;
+    }
+
+    public String getPassword() {
         return password;
     }
 
-    public double getDepositBalance(){
+    public double getDepositBalance() {
         return depositBalance;
     }
 
-    public void addDeposit(double amount){
+    public void addDeposit(double amount) {
         depositBalance += amount;
     }
 
-    public void deductDeposit(double amount){
+    public void deductDeposit(double amount) {
         depositBalance -= amount;
     }
-
 }

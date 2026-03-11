@@ -7,106 +7,95 @@ import enums.*;
 public class RentalShopBook {
 
     private HashMap<String, Vehicle> vehicles = new HashMap<>();
-
     private HashMap<Integer, Rental> activeRentals = new HashMap<>();
 
     public void loadVehicles() {
+        vehicles.put("B101", new Bike("B101", "R15", 300));
+        vehicles.put("B102", new Bike("B102", "Duke", 350));
+        vehicles.put("B103", new Bike("B103", "Pulsar", 250));
 
-        vehicles.put("B101", new Vehicle("B101", "R15", VehicleType.BIKE, 300) {
-        });
-        vehicles.put("B102", new Vehicle("B102", "Duke", VehicleType.BIKE, 350) {
-        });
-        vehicles.put("B103", new Vehicle("B103", "Pulsar", VehicleType.BIKE, 250) {
-        });
+        vehicles.put("C201", new Car("C201", "Swift", 800));
+        vehicles.put("C202", new Car("C202", "Creta", 1200));
+        vehicles.put("C203", new Car("C203", "Verna", 1000));
+    }
 
-        vehicles.put("C201", new Vehicle("C201", "Swift", VehicleType.CAR, 800) {
-        });
-        vehicles.put("C202", new Vehicle("C202", "Creta", VehicleType.CAR, 1200) {
-        });
-        vehicles.put("C203", new Vehicle("C203", "Verna", VehicleType.CAR, 1000) {
-        });
+    private Vehicle findVehicle(String input) {
+        if (vehicles.containsKey(input))
+            return vehicles.get(input);
 
+        for (Vehicle v : vehicles.values()) {
+            if (v.getModelName().equalsIgnoreCase(input))
+                return v;
+        }
+        return null;
     }
 
     public void showAvailableVehicles() {
-
-        System.out.println("\nAvailable Vehicles\n");
-
+        System.out.println("\n  ----- Available Vehicles -----");
+        System.out.printf("  %-6s %-10s %-6s %s%n", "ID", "Name", "Type", "Rate");
+        System.out.println("  ------------------------------");
         for (Vehicle v : vehicles.values()) {
-
             if (v.getStatus() == VehicleStatus.AVAILABLE) {
-
-                System.out.println(
-                        v.getVehicleId() + "  " +
-                                v.getModelName() + "  " +
-                                v.getVehicleType() + "  " +
-                                v.getPricePer24Hours());
-
+                System.out.printf("  %-6s %-10s %-6s Rs.%d / 24 hrs%n",
+                        v.getVehicleId(), v.getModelName(),
+                        v.getVehicleType(), v.getPricePer24Hours());
             }
-
         }
-
+        System.out.println("  ------------------------------");
     }
 
-   
+    public boolean hasActiveRental(int userId) {
+        return activeRentals.containsKey(userId);
+    }
 
-    public boolean rentVehicle(User user, String vehicleId) {
+    public double getRequiredDeposit(String input) {
+        Vehicle v = findVehicle(input);
+        return (v == null) ? -1 : v.getPricePer24Hours();
+    }
 
-        Vehicle vehicle = vehicles.get(vehicleId);
+    public boolean rentVehicle(User user, String input) {
 
+        Vehicle vehicle = findVehicle(input);
         if (vehicle == null) {
-            System.out.println("Vehicle not found");
+            System.out.println("Vehicle not found.");
             return false;
         }
-
-        // Prevent user from renting multiple vehicles
         if (activeRentals.containsKey(user.getUserId())) {
-            System.out.println("User already has an active rental");
+            System.out.println("You already have an active rental.");
             return false;
         }
-
         if (vehicle.getStatus() == VehicleStatus.RENTED) {
-            System.out.println("Vehicle already rented");
+            System.out.println("Vehicle is already rented.");
             return false;
         }
-
         if (user.getDepositBalance() < vehicle.getPricePer24Hours()) {
-            System.out.println("Deposit not sufficient");
+            System.out.printf("Insufficient balance. Required: Rs.%d  |  Your balance: Rs.%.2f%n",
+                    vehicle.getPricePer24Hours(), user.getDepositBalance());
             return false;
         }
 
         Rental rental = new Rental("R" + System.currentTimeMillis(), user, vehicle);
-
         vehicle.setStatus(VehicleStatus.RENTED);
-
         activeRentals.put(user.getUserId(), rental);
-
         return true;
-    }
-
-    public Rental getUserRental(int userId) {
-
-        return activeRentals.get(userId);
-
     }
 
     public double returnVehicle(User user, BillingSystem billing) {
 
         Rental rental = activeRentals.get(user.getUserId());
-
         if (rental == null) {
-            System.out.println("No active rental");
+            System.out.println("No active rental found.");
             return -1;
         }
 
         double bill = billing.calculateBill(rental);
-
         rental.getVehicle().setStatus(VehicleStatus.AVAILABLE);
-
+        rental.closeRental();
         activeRentals.remove(user.getUserId());
-
         return bill;
-
     }
 
+    public Rental getUserRental(int userId) {
+        return activeRentals.get(userId);
+    }
 }
