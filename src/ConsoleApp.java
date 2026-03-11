@@ -74,7 +74,7 @@ public class ConsoleApp {
                 doRent(sc, user, shop);
 
             } else if (choice == 4) {
-                doReturn(user, shop, billing);
+                doReturn(sc, user, shop, billing);
 
             } else if (choice == 5) {
                 System.out.println("Logged out successfully");
@@ -114,26 +114,22 @@ public class ConsoleApp {
 
         System.out.println("\n-- Login --");
 
-        for (int i = 1; i <= 3; i++) {
+        System.out.print("Enter Mobile: ");
+        long mobile = sc.nextLong();
+        sc.nextLine();
 
-            System.out.print("Enter Mobile: ");
-            long mobile = sc.nextLong();
-            sc.nextLine();
+        System.out.print("Enter Password: ");
+        String pass = sc.nextLine();
 
-            System.out.print("Enter Password: ");
-            String pass = sc.nextLine();
+        User user = userBook.login(mobile, pass);
 
-            User user = userBook.login(mobile, pass);
-
-            if (user != null) {
-                System.out.println("Login successful! Welcome " + user.getName());
-                return user;
-            }
-
-            System.out.println("Wrong credentials. Attempt " + i + " of 3");
+        if (user != null) {
+            System.out.println("Login successful! Welcome " + user.getName());
+            return user;
         }
 
-        System.out.println("Login failed. Going back to main menu.");
+        System.out.println("Wrong credentials. Looks like you don't have an account.");
+        System.out.println("Please sign up first!");
         return null;
     }
 
@@ -213,7 +209,7 @@ public class ConsoleApp {
         }
     }
 
-    static void doReturn(User user, RentalShopBook shop, BillingSystem billing) {
+    static void doReturn(Scanner sc, User user, RentalShopBook shop, BillingSystem billing) {
 
         if (!shop.hasActiveRental(user.getUserId())) {
             System.out.println("You don't have any active rental.");
@@ -230,6 +226,33 @@ public class ConsoleApp {
 
         System.out.println("Bill Amount: Rs." + bill);
         System.out.println("Remaining Balance: Rs." + user.getDepositBalance());
+
+        if (user.getDepositBalance() < 0) {
+            System.out.println("Your bill was more than your deposit!");
+            System.out.println("You still owe: Rs." + (-user.getDepositBalance()));
+            System.out.println("Please pay the remaining amount to continue.");
+
+            while (user.getDepositBalance() < 0) {
+                System.out.println("Amount due: Rs." + (-user.getDepositBalance()));
+                System.out.print("Enter payment: Rs.");
+                double payment = sc.nextDouble();
+                sc.nextLine();
+
+                if (payment <= 0) {
+                    System.out.println("Invalid amount. Please enter a valid amount.");
+                    continue;
+                }
+
+                user.addDeposit(payment);
+
+                if (user.getDepositBalance() < 0) {
+                    System.out.println("Still due: Rs." + (-user.getDepositBalance()));
+                } else {
+                    System.out.println("Due cleared! Balance: Rs." + user.getDepositBalance());
+                }
+            }
+        }
+
         System.out.println("Vehicle returned successfully. You can rent another vehicle!");
     }
 
