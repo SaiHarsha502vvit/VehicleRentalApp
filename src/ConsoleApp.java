@@ -6,9 +6,9 @@ import java.util.Scanner;
 
 public class ConsoleApp {
 
-    public static void main(String[] args) {
+    static Scanner sc = new Scanner(System.in);
 
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) {
 
         UserBook userBook = new UserBook();
         RentalShopBook shop = new RentalShopBook();
@@ -28,14 +28,14 @@ public class ConsoleApp {
             sc.nextLine();
 
             if (choice == 1) {
-                doSignup(sc, userBook);
+                doSignup(userBook);
 
             } else if (choice == 2) {
 
-                User user = doLogin(sc, userBook);
+                User user = doLogin(userBook);
 
                 if (user != null) {
-                    userMenu(sc, user, shop, billing);
+                    userMenu(user, shop, billing);
                 }
 
             } else if (choice == 3) {
@@ -48,7 +48,7 @@ public class ConsoleApp {
         }
     }
 
-    static void userMenu(Scanner sc, User user, RentalShopBook shop, BillingSystem billing) {
+    static void userMenu(User user, RentalShopBook shop, BillingSystem billing) {
 
         while (true) {
 
@@ -65,16 +65,16 @@ public class ConsoleApp {
             sc.nextLine();
 
             if (choice == 1) {
-                doAddDeposit(sc, user);
+                doAddDeposit(user);
 
             } else if (choice == 2) {
                 shop.showAvailableVehicles();
 
             } else if (choice == 3) {
-                doRent(sc, user, shop);
+                doRent(user, shop);
 
             } else if (choice == 4) {
-                doReturn(sc, user, shop, billing);
+                doReturn(user, shop, billing);
 
             } else if (choice == 5) {
                 System.out.println("Logged out successfully");
@@ -86,7 +86,7 @@ public class ConsoleApp {
         }
     }
 
-    static void doSignup(Scanner sc, UserBook userBook) {
+    static void doSignup(UserBook userBook) {
 
         System.out.println("\nSign Up");
 
@@ -110,7 +110,7 @@ public class ConsoleApp {
         }
     }
 
-    static User doLogin(Scanner sc, UserBook userBook) {
+    static User doLogin(UserBook userBook) {
 
         System.out.println("\n-- Login --");
 
@@ -133,7 +133,7 @@ public class ConsoleApp {
         return null;
     }
 
-    static void doAddDeposit(Scanner sc, User user) {
+    static void doAddDeposit(User user) {
 
         System.out.println("Minimum deposit amount is Rs." + UserBook.MINIMUM_TOPUP);
         System.out.print("Enter amount: Rs.");
@@ -150,7 +150,7 @@ public class ConsoleApp {
         System.out.println("New Balance: Rs." + user.getDepositBalance());
     }
 
-    static void doRent(Scanner sc, User user, RentalShopBook shop) {
+    static void doRent(User user, RentalShopBook shop) {
 
         if (shop.hasActiveRental(user.getUserId())) {
             System.out.println("You already have a vehicle rented. Please return it first.");
@@ -209,7 +209,7 @@ public class ConsoleApp {
         }
     }
 
-    static void doReturn(Scanner sc, User user, RentalShopBook shop, BillingSystem billing) {
+    static void doReturn(User user, RentalShopBook shop, BillingSystem billing) {
 
         if (!shop.hasActiveRental(user.getUserId())) {
             System.out.println("You don't have any active rental.");
