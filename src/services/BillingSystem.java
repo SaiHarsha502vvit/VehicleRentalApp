@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 
 public class BillingSystem {
 
-    private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("dd-MM-yyyy  HH:mm:ss");
+    private static DateTimeFormatter FMT = DateTimeFormatter.ofPattern("dd-MM-yyyy  HH:mm:ss");
 
     public double calculateBill(Rental rental) {
 

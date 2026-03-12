@@ -6,6 +6,8 @@ import enums.*;
 
 public class RentalShopBook {
 
+    public static int count = 0;
+
     private HashMap<String, Vehicle> vehicles = new HashMap<>();
     private HashMap<Integer, Rental> activeRentals = new HashMap<>();
 
@@ -30,16 +32,30 @@ public class RentalShopBook {
         return null;
     }
 
+    public boolean hasAvailableVehicles() {
+        for (Vehicle v : vehicles.values()) {
+            if (v.getStatus() == VehicleStatus.AVAILABLE)
+                return true;
+        }
+        return false;
+    }
+
     public void showAvailableVehicles() {
         System.out.println("\n  ----- Available Vehicles -----");
         System.out.printf("  %-6s %-10s %-6s %s%n", "ID", "Name", "Type", "Rate");
         System.out.println("  ------------------------------");
+        boolean anyAvailable = false;
         for (Vehicle v : vehicles.values()) {
             if (v.getStatus() == VehicleStatus.AVAILABLE) {
                 System.out.printf("  %-6s %-10s %-6s Rs.%d / 24 hrs%n",
                         v.getVehicleId(), v.getModelName(),
                         v.getVehicleType(), v.getPricePer24Hours());
+                anyAvailable = true;
             }
+        }
+        if (!anyAvailable) {
+            System.out.println("  Sorry, we are out of vehicles right now!");
+            System.out.println("  Please check back later.");
         }
         System.out.println("  ------------------------------");
     }
@@ -74,7 +90,7 @@ public class RentalShopBook {
             return false;
         }
 
-        Rental rental = new Rental("R" + System.currentTimeMillis(), user, vehicle);
+        Rental rental = new Rental("R" + (++count), user, vehicle);
         vehicle.setStatus(VehicleStatus.RENTED);
         activeRentals.put(user.getUserId(), rental);
         return true;

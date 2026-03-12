@@ -7,14 +7,14 @@ import java.util.Scanner;
 public class ConsoleApp {
 
     static Scanner sc = new Scanner(System.in);
+    static BillingSystem billing = new BillingSystem();
+    static UserBook userBook = new UserBook();
+    static RentalShopBook shop = new RentalShopBook();
+    static {
+        shop.loadVehicles();
+    }
 
     public static void main(String[] args) {
-
-        UserBook userBook = new UserBook();
-        RentalShopBook shop = new RentalShopBook();
-        BillingSystem billing = new BillingSystem();
-
-        shop.loadVehicles();
 
         while (true) {
 
@@ -28,6 +28,7 @@ public class ConsoleApp {
             sc.nextLine();
 
             if (choice == 1) {
+
                 doSignup(userBook);
 
             } else if (choice == 2) {
@@ -36,6 +37,8 @@ public class ConsoleApp {
 
                 if (user != null) {
                     userMenu(user, shop, billing);
+                } else {
+                    System.out.println("Sorry User doest Exist...");
                 }
 
             } else if (choice == 3) {
@@ -107,6 +110,8 @@ public class ConsoleApp {
 
         if (created) {
             System.out.println("Account created successfully! Please login.");
+        } else {
+            System.out.println("Please give Details Properly.....");
         }
     }
 
@@ -164,6 +169,13 @@ public class ConsoleApp {
 
         if (shop.hasActiveRental(user.getUserId())) {
             System.out.println("You already have a vehicle rented. Please return it first.");
+            return;
+        }
+
+        if (!shop.hasAvailableVehicles()) {
+            System.out.println("\n  Sorry, we are currently out of vehicles!");
+            System.out.println("  All our vehicles are rented out at the moment.");
+            System.out.println("  Please try again later.");
             return;
         }
 
