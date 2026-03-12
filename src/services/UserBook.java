@@ -1,10 +1,13 @@
 package services;
 
 import java.util.HashMap;
+import java.util.Scanner;
+
 import models.User;
 
 public class UserBook {
 
+    static Scanner sc = new Scanner(System.in);
     public static final double MINIMUM_TOPUP = 200.0;
 
     private HashMap<Long, User> users = new HashMap<>();
@@ -55,11 +58,39 @@ public class UserBook {
         return hasLetter && hasDigit;
     }
 
-    public User login(long mobile, String password) {
+    public Object login(long mobile, String password) {
         User user = users.get(mobile);
-        if (user != null && user.getPassword().equals(password))
-            return user;
+        if (user != null)
+            if (user.getPassword().equals(password)) {
+                 return user;
+            }else{
+                System.out.println("Your Password is Wrong..\nTry to Login with Correct Password..");
+                System.out.println("Or Do you want to reset your password...!\n if yes please press (yes)");
+
+                String userIP = sc.next();
+                userIP.toLowerCase();
+
+                if (userIP.equals("yes")) {
+                    resetPassword(user);
+
+                    return user;
+                }else{
+                    System.out.println("Sarey ne istam vadhu antey..");
+                    return new String("-1");
+                }
+            }
         return null;
+    }
+
+    public User resetPassword(User user){
+        System.out.println("Please enter your new password...");
+        String newPassKey = sc.next();
+
+        user.setPassword(newPassKey);
+
+        System.out.println("Successfully changed Password..");
+    
+        return user;
     }
 
     public boolean userExists(long mobile) {
