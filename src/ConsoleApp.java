@@ -128,17 +128,17 @@ public class ConsoleApp {
 
         Object user = userBook.login(mobile, pass);
 
-        if (user.equals("-1")) {
-            return null;
-        }
-        
-        if (user==null) {
-             System.out.println("Wrong credentials. Looks like you don't have an account.");
+        if (user == null) {
+            System.out.println("Wrong credentials. Looks like you don't have an account.");
             System.out.println("Please sign up first!");
             return null;
         }
 
-        User user2 = (User) user; 
+        if (user.equals("-1")) {
+            return null;
+        }
+
+        User user2 = (User) user;
 
         if (user != null) {
             System.out.println("Login successful! Welcome " + user2.getName());

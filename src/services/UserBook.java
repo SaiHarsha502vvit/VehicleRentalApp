@@ -32,6 +32,11 @@ public class UserBook {
             return false;
         }
 
+        if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
+            System.out.println("Please Enter a Strong Password");
+            return false;
+        }
+
         users.put(mobile, new User(name, mobile, license, password));
         return true;
     }
@@ -62,8 +67,8 @@ public class UserBook {
         User user = users.get(mobile);
         if (user != null)
             if (user.getPassword().equals(password)) {
-                 return user;
-            }else{
+                return user;
+            } else {
                 System.out.println("Your Password is Wrong..\nTry to Login with Correct Password..");
                 System.out.println("Or Do you want to reset your password...!\n if yes please press (yes)");
 
@@ -71,10 +76,24 @@ public class UserBook {
                 userIP.toLowerCase();
 
                 if (userIP.equals("yes")) {
-                    resetPassword(user);
+                    User user2 = resetPassword(user);
 
-                    return user;
-                }else{
+                    if (user2 == null) {
+                        System.out.println("Giving You another chance please type it correctly...");
+
+                        User user3 = resetPassword(user);
+
+                        if (user3 == null) {
+                            System.out.println("Password reset failed. Please login again with correct credentials.");
+                            return new String("-1");
+                        }
+
+                        return user3;
+                    }
+
+                    return user2;
+
+                } else {
                     System.out.println("Sarey ne istam vadhu antey..");
                     return new String("-1");
                 }
@@ -82,14 +101,19 @@ public class UserBook {
         return null;
     }
 
-    public User resetPassword(User user){
+    public User resetPassword(User user) {
         System.out.println("Please enter your new password...");
         String newPassKey = sc.next();
+
+        if (!newPassKey.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
+            System.out.println("Please Enter a Strong Password");
+            return null;
+        }
 
         user.setPassword(newPassKey);
 
         System.out.println("Successfully changed Password..");
-    
+
         return user;
     }
 
