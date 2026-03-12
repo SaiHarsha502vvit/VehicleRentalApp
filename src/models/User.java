@@ -50,4 +50,8 @@ public class User {
     public void deductDeposit(double amount) {
         depositBalance -= amount;
     }
+
+    public void setPassword(String newPasskey){
+        this.password=newPasskey;
+    }
 }

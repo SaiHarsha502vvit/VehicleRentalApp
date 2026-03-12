@@ -121,15 +121,25 @@ public class ConsoleApp {
         System.out.print("Enter Password: ");
         String pass = sc.nextLine();
 
-        User user = userBook.login(mobile, pass);
+        Object user = userBook.login(mobile, pass);
 
-        if (user != null) {
-            System.out.println("Login successful! Welcome " + user.getName());
-            return user;
+        if (user.equals("-1")) {
+            return null;
+        }
+        
+        if (user==null) {
+             System.out.println("Wrong credentials. Looks like you don't have an account.");
+            System.out.println("Please sign up first!");
+            return null;
         }
 
-        System.out.println("Wrong credentials. Looks like you don't have an account.");
-        System.out.println("Please sign up first!");
+        User user2 = (User) user; 
+
+        if (user != null) {
+            System.out.println("Login successful! Welcome " + user2.getName());
+            return user2;
+        }
+
         return null;
     }
 
