@@ -94,17 +94,43 @@ public class ConsoleApp {
         System.out.println("\nSign Up");
 
         System.out.print("Name: ");
-        String name = sc.nextLine();
+        String name = sc.nextLine().trim();
+
+        if (name.isEmpty()) {
+            System.out.println("Name cannot be empty. Please try signup again.");
+            return;
+        }
 
         System.out.print("Mobile: ");
-        long mobile = sc.nextLong();
-        sc.nextLine();
+        String mobileInput = sc.nextLine().trim();
+
+        if (mobileInput.isEmpty()) {
+            System.out.println("Mobile number cannot be empty. Please try signup again.");
+            return;
+        }
+
+        if (!mobileInput.matches("\\d+")) {
+            System.out.println("Mobile number must contain digits only.");
+            return;
+        }
+
+        long mobile = Long.parseLong(mobileInput);
 
         System.out.print("License No: ");
-        String license = sc.nextLine();
+        String license = sc.nextLine().trim();
+
+        if (license.isEmpty()) {
+            System.out.println("License number cannot be empty. Please try signup again.");
+            return;
+        }
 
         System.out.print("Password: ");
         String pass = sc.nextLine();
+
+        if (pass.trim().isEmpty()) {
+            System.out.println("Password cannot be empty. Please try signup again.");
+            return;
+        }
 
         boolean created = userBook.createAccount(name, mobile, license, pass);
 
@@ -120,11 +146,27 @@ public class ConsoleApp {
         System.out.println("\n-- Login --");
 
         System.out.print("Enter Mobile: ");
-        long mobile = sc.nextLong();
-        sc.nextLine();
+        String mobileInput = sc.nextLine().trim();
+
+        if (mobileInput.isEmpty()) {
+            System.out.println("Mobile number cannot be empty.");
+            return null;
+        }
+
+        if (!mobileInput.matches("\\d+")) {
+            System.out.println("Invalid mobile number. Please enter digits only.");
+            return null;
+        }
+
+        long mobile = Long.parseLong(mobileInput);
 
         System.out.print("Enter Password: ");
         String pass = sc.nextLine();
+
+        if (pass.trim().isEmpty()) {
+            System.out.println("Password cannot be empty.");
+            return null;
+        }
 
         Object user = userBook.login(mobile, pass);
 
