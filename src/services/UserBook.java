@@ -34,6 +34,9 @@ public class UserBook {
 
         if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
             System.out.println("Please Enter a Strong Password");
+            System.out.println("Please Enter a Strong Password");
+            System.out.println(
+                    "Password Must contain\n1. One Capital letter\n2. one Small letter\n3. one Special Character\n4. Digits too..\n5. At last the password length should be greater than 8..");
             return false;
         }
 
@@ -107,6 +110,8 @@ public class UserBook {
 
         if (!newPassKey.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
             System.out.println("Please Enter a Strong Password");
+            System.out.println(
+                    "Password Must contain\n1. One Capital letter\n2. one Small letter\n3. one Special Character\n4. Digits too..\n5. At last the password length should be greater than 8..");
             return null;
         }
 
