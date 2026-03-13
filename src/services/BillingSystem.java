@@ -21,15 +21,15 @@ public class BillingSystem {
         double pricePer24Hrs = rental.getVehicle().getPricePer24Hours();
         double total = minutes * pricePer24Hrs;
 
-        long day = minutes / 24;
-        long remhrs = minutes % 24;
+        long hrs = minutes / 60;
+        long minutes = minutes % 60;
 
         System.out.println("\n  ============== BILL ==============");
         System.out.println("  Vehicle     : " + rental.getVehicle().getModelName()
                 + "  [" + rental.getVehicle().getVehicleType() + "]");
         System.out.println("  Start Time  : " + start.format(FMT));
         System.out.println("  Return Time : " + end.format(FMT));
-        System.out.printf("  Duration    : %d hr  %d min%n", day, remhrs);
+        System.out.printf("  Duration    : %d hr  %d min%n", hrs, minutes);
         System.out.printf("  Rate        : Rs.%d / 24 hrs%n", (int) pricePer24Hrs);
         System.out.printf("  Total Bill  : Rs.%.2f%n", total);
         System.out.println("  ==================================");
