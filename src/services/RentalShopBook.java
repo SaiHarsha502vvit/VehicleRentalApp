@@ -4,6 +4,8 @@ import java.util.HashMap;
 import models.*;
 import enums.*;
 
+import static utils.ConsoleColors.*;
+
 public class RentalShopBook {
 
     public static int count = 0;
@@ -41,23 +43,23 @@ public class RentalShopBook {
     }
 
     public void showAvailableVehicles() {
-        System.out.println("\n  ----- Available Vehicles -----");
-        System.out.printf("  %-6s %-10s %-6s %s%n", "ID", "Name", "Type", "Rate");
-        System.out.println("  ------------------------------");
+        System.out.println(title("\n  ----- Available Vehicles -----"));
+        System.out.println(menu(String.format("  %-6s %-10s %-6s %s", "ID", "Name", "Type", "Rate")));
+        System.out.println(menu("  ------------------------------"));
         boolean anyAvailable = false;
         for (Vehicle v : vehicles.values()) {
             if (v.getStatus() == VehicleStatus.AVAILABLE) {
-                System.out.printf("  %-6s %-10s %-6s Rs.%d / 24 hrs%n",
+                System.out.println(info(String.format("  %-6s %-10s %-6s Rs.%d / 24 hrs",
                         v.getVehicleId(), v.getModelName(),
-                        v.getVehicleType(), v.getPricePer24Hours());
+                        v.getVehicleType(), v.getPricePer24Hours())));
                 anyAvailable = true;
             }
         }
         if (!anyAvailable) {
-            System.out.println("  Sorry, we are out of vehicles right now!");
-            System.out.println("  Please check back later.");
+            System.out.println(warning("  Sorry, we are out of vehicles right now!"));
+            System.out.println(warning("  Please check back later."));
         }
-        System.out.println("  ------------------------------");
+        System.out.println(menu("  ------------------------------"));
     }
 
     public boolean hasActiveRental(int userId) {
@@ -73,20 +75,20 @@ public class RentalShopBook {
 
         Vehicle vehicle = findVehicle(input);
         if (vehicle == null) {
-            System.out.println("Vehicle not found.");
+            System.out.println(error("Vehicle not found."));
             return false;
         }
         if (activeRentals.containsKey(user.getUserId())) {
-            System.out.println("You already have an active rental.");
+            System.out.println(warning("You already have an active rental."));
             return false;
         }
         if (vehicle.getStatus() == VehicleStatus.RENTED) {
-            System.out.println("Vehicle is already rented.");
+            System.out.println(warning("Vehicle is already rented."));
             return false;
         }
         if (user.getDepositBalance() < vehicle.getPricePer24Hours()) {
-            System.out.printf("Insufficient balance. Required: Rs.%d  |  Your balance: Rs.%.2f%n",
-                    vehicle.getPricePer24Hours(), user.getDepositBalance());
+            System.out.println(error(String.format("Insufficient balance. Required: Rs.%d  |  Your balance: Rs.%.2f",
+                    vehicle.getPricePer24Hours(), user.getDepositBalance())));
             return false;
         }
 
@@ -100,7 +102,7 @@ public class RentalShopBook {
 
         Rental rental = activeRentals.get(user.getUserId());
         if (rental == null) {
-            System.out.println("No active rental found.");
+            System.out.println(error("No active rental found."));
             return -1;
         }
 

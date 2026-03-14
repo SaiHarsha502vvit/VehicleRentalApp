@@ -5,6 +5,8 @@ import java.util.Scanner;
 
 import models.User;
 
+import static utils.ConsoleColors.*;
+
 public class UserBook {
 
     static Scanner sc = new Scanner(System.in);
@@ -15,28 +17,27 @@ public class UserBook {
     public boolean createAccount(String name, long mobile, String license, String password) {
 
         if (String.valueOf(mobile).length() != 10) {
-            System.out.println("Invalid mobile number. Must be exactly 10 digits.");
+            System.out.println(error("Invalid mobile number. Must be exactly 10 digits."));
             return false;
         }
 
         if (!isValidLicense(license)) {
-            System.out.println("Invalid license number.");
-            System.out.println("  - Length must be 8 to 15 characters.");
-            System.out.println("  - Must be alphanumeric (letters A-Z and digits 0-9 only).");
-            System.out.println("  - Must contain at least one letter AND at least one digit.");
+            System.out.println(error("Invalid license number."));
+            System.out.println(warning("  - Length must be 8 to 15 characters."));
+            System.out.println(warning("  - Must be alphanumeric (letters A-Z and digits 0-9 only)."));
+            System.out.println(warning("  - Must contain at least one letter AND at least one digit."));
             return false;
         }
 
         if (users.containsKey(mobile)) {
-            System.out.println("An account with this mobile number already exists.");
+            System.out.println(error("An account with this mobile number already exists."));
             return false;
         }
 
         if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
-            System.out.println("Please Enter a Strong Password");
-            System.out.println("Please Enter a Strong Password");
-            System.out.println(
-                    "Password Must contain\n1. One Capital letter\n2. one Small letter\n3. one Special Character\n4. Digits too..\n5. At last the password length should be greater than 8..");
+            System.out.println(error("Please enter a strong password."));
+            System.out.println(warning(
+                    "Password must contain\n1. One capital letter\n2. One small letter\n3. One special character\n4. Digits too\n5. At least 8 characters in length"));
             return false;
         }
 
@@ -72,8 +73,8 @@ public class UserBook {
             if (user.getPassword().equals(password)) {
                 return user;
             } else {
-                System.out.println("Your Password is Wrong..\nTry to Login with Correct Password..");
-                System.out.println("Or Do you want to reset your password...!\n if yes please press (yes)");
+                System.out.println(error("Your password is wrong. Try to login with the correct password."));
+                System.out.println(prompt("Do you want to reset your password? Type yes to continue: "));
 
                 String userIP = sc.next();
                 userIP.toLowerCase();
@@ -82,12 +83,13 @@ public class UserBook {
                     User user2 = resetPassword(user);
 
                     if (user2 == null) {
-                        System.out.println("Giving You another chance please type it correctly...");
+                        System.out.println(warning("Giving you another chance. Please type it correctly..."));
 
                         User user3 = resetPassword(user);
 
                         if (user3 == null) {
-                            System.out.println("Password reset failed. Please login again with correct credentials.");
+                            System.out.println(
+                                    error("Password reset failed. Please login again with correct credentials."));
                             return new String("-1");
                         }
 
@@ -97,7 +99,7 @@ public class UserBook {
                     return user2;
 
                 } else {
-                    System.out.println("Sarey ne istam vadhu antey..");
+                    System.out.println(warning("Password reset skipped."));
                     return new String("-1");
                 }
             }
@@ -105,19 +107,19 @@ public class UserBook {
     }
 
     public User resetPassword(User user) {
-        System.out.println("Please enter your new password...");
+        System.out.println(prompt("Please enter your new password..."));
         String newPassKey = sc.next();
 
         if (!newPassKey.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
-            System.out.println("Please Enter a Strong Password");
-            System.out.println(
-                    "Password Must contain\n1. One Capital letter\n2. one Small letter\n3. one Special Character\n4. Digits too..\n5. At last the password length should be greater than 8..");
+            System.out.println(error("Please enter a strong password."));
+            System.out.println(warning(
+                    "Password must contain\n1. One capital letter\n2. One small letter\n3. One special character\n4. Digits too\n5. At least 8 characters in length"));
             return null;
         }
 
         user.setPassword(newPassKey);
 
-        System.out.println("Successfully changed Password..");
+        System.out.println(success("Successfully changed password."));
 
         return user;
     }
